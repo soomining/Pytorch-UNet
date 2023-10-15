@@ -19,9 +19,10 @@ from unet import UNet
 from utils.data_loading import BasicDataset, CarvanaDataset
 from utils.dice_score import dice_loss
 
-dir_img = Path('./data/imgs/')
-dir_mask = Path('./data/masks/')
-dir_checkpoint = Path('./checkpoints/')
+
+dir_img = Path('/content/gdrive/MyDrive/통학론/segmentation_unet/data/imgs')
+dir_mask = Path('/content/gdrive/MyDrive/통학론/segmentation_unet/data/masks')
+dir_checkpoint = Path('/content/gdrive/MyDrive/통학론/segmentation_unet/results/ckpts')
 
 
 def train_model(
