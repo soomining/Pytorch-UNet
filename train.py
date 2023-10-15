@@ -19,16 +19,16 @@ from unet import UNet
 from utils.data_loading import BasicDataset, CarvanaDataset
 from utils.dice_score import dice_loss
 
-dir_img = Path('./data/imgs/')
-dir_mask = Path('./data/masks/')
-dir_checkpoint = Path('./checkpoints/')
+dir_img = Path('/content/gdrive/MyDrive/통학론/segmentation_unet/data/imgs')
+dir_mask = Path('/content/gdrive/MyDrive/통학론/segmentation_unet/data/masks')
+dir_checkpoint = Path('/content/gdrive/MyDrive/통학론/segmentation_unet/results/ckpts')
 
 
 def train_model(
         model,
         device,
         epochs: int = 5,
-        batch_size: int = 1,
+        batch_size: int = 32,
         learning_rate: float = 1e-5,
         val_percent: float = 0.1,
         save_checkpoint: bool = True,
@@ -39,6 +39,12 @@ def train_model(
         gradient_clipping: float = 1.0,
 ):
     # 1. Create dataset
+   data_transforms = transforms.Compose([
+        transforms.Resize((512, 512)),  # Resize images to a fixed size
+        transforms.ToTensor(),           # Convert the images to PyTorch tensors
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize the images
+    ])
+        
     try:
         dataset = CarvanaDataset(dir_img, dir_mask, img_scale)
     except (AssertionError, RuntimeError, IndexError):
